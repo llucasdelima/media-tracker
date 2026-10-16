@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Media Tracker - Todos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <style>
+      .card-title-clamp {
+        display: -webkit-box;
+        line-clamp: 2; /* número máximo de linhas visíveis (ex: 2 ou 3) */
+        -webkit-line-clamp: 2; /* número máximo de linhas visíveis (ex: 2 ou 3) */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 2.8em; /* garante que títulos de 1 linha ocupem o mesmo espaço de 2 linhas */
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a href="{{ url_for('visao_todos') }}"><h1 class="navbar-item title">Media Tracker</h1></a>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <strong>Adicionar:</strong>
+              <div class="buttons has-addons">
+                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                  <span><i class="ti ti-book-2 mr-2"></i></span>
+                  <span>Livro</span>
+                </a>
+                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                  <span><i class="ti ti-book-2 mr-2"></i></span>
+                  <span>Livro</span>
+                </a>
+                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                  <span><i class="ti ti-book-2 mr-2"></i></span>
+                  <span>Livro</span>
+                </a>
+                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                  <span><i class="ti ti-book-2 mr-2"></i></span>
+                  <span>Livro</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    {% block conteudo %}
+    <!--  -->
+    {% endblock %}
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Media Tracker</strong>
+          by Lucas de Lima
+        </p>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title %}Editar {{ item['Título'] }} - Media Tracker{% endblock %}
+<!--  -->
+{% block conteudo %}
+<section class="section">
+  <div class="container">
+    <a href="{{ url_for('listar', categoria=categoria_atual) }}">&larr; Voltar para {{ config['nome_aba'] }}</a>
+    <hr />
+    <!-- Formulário Principal -->
+    <form
+      action="{{ url_for('editar_item', categoria=categoria_atual, item_id=item_id) }}"
+      method="POST"
+      enctype="multipart/form-data"
+      id="midia-form">
+      <div class="fixed-grid has-3-cols">
+        <div class="grid">
+          <div class="cell has-text-centered">
+            <!-- Exibição da Capa -->
+            {% if item['Capa'] %}
+            <figure class="image is-2by3 mb-4">
+              <img
+                src="{{ url_for('static', filename='covers/' + item['Capa'] + '.jpg') }}"
+                data-capa="{{ item['Capa'] }}"
+                onerror="tratarErroCapa(this)"
+                alt="{{ item['Título'] }}" />
+            </figure>
+            {% else %}
+            <img src="{{ url_for('static', filename='covers/sem-capa.jpg') }}" alt="Sem capa" />
+            {% endif %}
+            <!-- Substituir Capa -->
+
+            <div class="file">
+              <label class="file-label m-auto" for="campo-capa">
+                <input class="file-input" id="campo-capa" type="file" name="arquivo_capa" accept="image/*" />
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="ti ti-upload"></i>
+                  </span>
+                  <span class="file-label">Substituir capa</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="cell is-col-span-2">
+            <h2 class="title is-2">Editar {{ config['titulo_singular'] }}</h2>
+
+            <!-- Título -->
+            <div class="field">
+              <label class="label" for="campo-titulo">Título *</label>
+              <input
+                class="input"
+                id="campo-titulo"
+                type="text"
+                name="Título"
+                value="{{ item['Título'] }}"
+                required
+                autocomplete="off" />
+            </div>
+
+            <!-- Criador (Autor, Desenvolvedora ou Diretor) -->
+            <div class="field">
+              {% if config['campo_criador'] %}
+              <label class="label">{{ config['rotulo_criador'] }}</label>
+              <input
+                type="hidden"
+                name="{{ config['campo_criador'] }}"
+                id="criador-hidden"
+                value="{{ item[config['campo_criador']] }}" />
+              <div
+                id="criador-wrapper"
+                data-initial="{{ item[config['campo_criador']] }}"
+                onclick="document.getElementById('criador-input-field').focus()">
+                <input
+                  class="input"
+                  type="text"
+                  id="criador-input-field"
+                  list="lista-criadores"
+                  placeholder="Adicionar..."
+                  autocomplete="off" />
+              </div>
+              <datalist id="lista-criadores">
+                {% for cr in criadores_disponiveis %}
+                <option value="{{ cr }}"></option>
+                {% endfor %}
+              </datalist>
+              {% endif %}
+            </div>
+
+            <!-- Editora -->
+            {% if config['tem_editora'] %}
+            <div class="field">
+              <label class="label" for="campo-editora">Editora</label>
+              <input
+                class="input"
+                id="campo-editora"
+                type="text"
+                name="Editora"
+                value="{{ item['Editora'] }}"
+                list="lista-editoras"
+                autocomplete="off" />
+              <datalist id="lista-editoras">
+                {% for ed in editoras_disponiveis %}
+                <option value="{{ ed }}"></option>
+                {% endfor %}
+              </datalist>
+            </div>
+            {% endif %}
+
+            <!-- Temporada -->
+            {% if config['tem_temporada'] %}
+            <div class="field">
+              <label class="label" for="campo-temporada">Temporada</label>
+              <input
+                class="input"
+                id="campo-temporada"
+                type="number"
+                name="Temporada"
+                value="{{ item['Temporada'] }}" />
+            </div>
+            {% endif %}
+
+            <!-- Ano -->
+            <div class="field">
+              <label class="label" for="campo-ano">Ano</label>
+              <input class="input" id="campo-ano" type="number" name="Ano" value="{{ item['Ano'] }}" />
+            </div>
+
+            <!-- Tags -->
+            <div class="field">
+              <label class="label">Tags</label>
+              <input type="hidden" name="Tags" id="tags-hidden" value="{{ item['Tags'] }}" />
+              <div
+                id="tags-wrapper"
+                data-initial="{{ item['Tags'] }}"
+                onclick="document.getElementById('tag-input-field').focus()">
+                <input
+                  class="input"
+                  type="text"
+                  id="tag-input-field"
+                  list="lista-tags"
+                  placeholder="Adicionar tag..."
+                  autocomplete="off" />
+              </div>
+              <datalist id="lista-tags">
+                {% for tag in tags_disponiveis %}
+                <option value="{{ tag }}"></option>
+                {% endfor %}
+              </datalist>
+            </div>
+
+            <div class="grid">
+              <!-- Status -->
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-status">Status</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="campo-status" name="Status">
+                        {% for opt in config['status_opcoes'] %} {% if item['Status'] == opt %}
+                        <option value="{{ opt }}" selected>{{ opt }}</option>
+                        {% else %}
+                        <option value="{{ opt }}">{{ opt }}</option>
+                        {% endif %} {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Iniciado -->
+
+              {% if config['tem_iniciado'] %}
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-iniciado">Iniciado</label>
+                  <input class="input" id="campo-iniciado" type="date" name="Iniciado" value="{{ item['Iniciado'] }}" />
+                </div>
+              </div>
+              {% endif %}
+
+              <!-- Finalizado -->
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-finalizado">Finalizado</label>
+                  <input
+                    class="input"
+                    id="campo-finalizado"
+                    type="date"
+                    name="Finalizado"
+                    value="{{ item['Finalizado'] }}" />
+                </div>
+              </div>
+
+              <!-- Nota -->
+              <div class="field">
+                <label class="label" for="campo-nota">Nota</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="campo-nota" name="Nota">
+                      {% if not item['Nota'] %}
+                      <option value="" selected>Sem avaliação</option>
+                      {% else %}
+                      <option value="">Sem avaliação</option>
+                      {% endif %} {% for n in range(1, 11) %} {% if item['Nota']|string == n|string %}
+                      <option value="{{ n }}" selected>{{ n }}</option>
+                      {% else %}
+                      <option value="{{ n }}">{{ n }}</option>
+                      {% endif %} {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Consideração -->
+            <div class="field">
+              <label class="label" for="campo-consideracao">Consideração</label>
+              <textarea class="textarea" id="campo-consideracao" name="Consideração">
+                {{ item['Consideração'] }}
+              </textarea>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="field">
+              <button class="button is-primary" type="submit">Salvar Alterações</button>
+              <button class="button is-danger" type="button" onclick="confirmarExclusao()">Excluir Registro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Formulário de Exclusão (invisível para acionamento via JS) -->
+  <form
+    id="delete-form"
+    action="{{ url_for('deletar_item', categoria=categoria_atual, item_id=item_id) }}"
+    method="POST"
+    style="display: none"></form>
+</section>
+
+<script>
+  function confirmarExclusao() {
+    if (confirm("Deseja realmente excluir este registo da planilha?")) {
+      document.getElementById("delete-form").submit();
+    }
+  }
+</script>
+{% endblock %}

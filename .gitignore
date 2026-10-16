@@ -1,0 +1,17 @@
+# Ambiente virtual
+.venv/
+
+# Caches do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Capas baixadas/geradas (mantendo apenas o arquivo padrão ou o diretório)
+static/covers/*
+!static/covers/.gitkeep
+
+# Arquivos do sistema e do editor
+.DS_Store
+.vscode/
+.idea/
+.prettierrc

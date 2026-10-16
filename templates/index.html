@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title %} Media Tracker - {{ "Todos" if categoria_atual == 'todos' else config['nome_aba'] }} {% endblock %}
+<!--  -->
+{% block conteudo %}
+<section class="section">
+  <div class="container">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <strong>
+            <i class="ti ti-filter"></i>
+            Filtro:
+          </strong>
+        </div>
+        <div class="level-item"><a href="{{ url_for('visao_todos') }}">Todos</a></div>
+        <div class="level-item"><a href="{{ url_for('listar', categoria='livros') }}">Livros</a></div>
+        <div class="level-item"><a href="{{ url_for('listar', categoria='jogos') }}">Jogos</a></div>
+        <div class="level-item"><a href="{{ url_for('listar', categoria='filmes') }}">Filmes</a></div>
+        <div class="level-item"><a href="{{ url_for('listar', categoria='series') }}">Séries</a></div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">a</div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="fixed-grid has-6-cols">
+      <div class="grid">
+        {% for reg in itens %} {# Normaliza se os dados vêm do agregado 'todos' ou da lista direta de categoria #} {%
+        set item = reg.item if categoria_atual == 'todos' else reg %} {% set cat_slug = reg.categoria_slug if
+        categoria_atual == 'todos' else categoria_atual %} {% set cat_id = reg.item_id if categoria_atual == 'todos'
+        else loop.index0 %} {% set criador = reg.criador_exibicao if categoria_atual == 'todos' else
+        (item[config['campo_criador']] if config['campo_criador'] and item[config['campo_criador']] else (('Temporada '
+        ~ item['Temporada']) if config['tem_temporada'] and item['Temporada'] else '')) %}
+
+        <div class="cell">
+          <a href="{{ url_for('ver_item', categoria=cat_slug, item_id=cat_id) }}">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-2by3">
+                  {% if item['Capa'] %}
+                  <img
+                    src="{{ url_for('static', filename='covers/' + item['Capa'] + '.jpg') }}"
+                    data-capa="{{ item['Capa'] }}"
+                    onerror="tratarErroCapa(this)"
+                    alt="{{ item['Título'] }}" />
+                  {% else %}
+                  <img src="{{ url_for('static', filename='covers/sem-capa.jpg') }}" alt="Sem capa" />
+                  {% endif %}
+                </figure>
+              </div>
+
+              <div class="card-content">
+                <div>
+                  <p class="title is-6 card-title-clamp mb-2">{{ item['Título'] }}</p>
+                </div>
+
+                <div>
+                  {% if item['Nota'] %}
+                  <p class="title is-5">★ {{ item['Nota'] }}</p>
+                  {% else %}
+                  <p class="title is-5">★ /</p>
+                  {% endif %}
+                </div>
+                <hr />
+                <div>{{ item['Status'] }}</div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
