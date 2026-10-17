@@ -20,7 +20,18 @@
         <div class="level-item"><a href="{{ url_for('listar', categoria='series') }}">Séries</a></div>
       </div>
       <div class="level-right">
-        <div class="level-item">a</div>
+        <div class="level-item">
+          <a href="#" class="button is-link is-active">
+            <span class="icon"><i class="ti ti-squares"></i></span>
+            <span>Cartões</span>
+          </a>
+        </div>
+        <div class="level-item">
+          <a href="#" class="button">
+            <span class="icon"><i class="ti ti-list"></i></span>
+            <span>Lista</span>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -47,7 +58,7 @@
                     onerror="tratarErroCapa(this)"
                     alt="{{ item['Título'] }}" />
                   {% else %}
-                  <img src="{{ url_for('static', filename='covers/sem-capa.jpg') }}" alt="Sem capa" />
+                  <img src="{{ url_for('static', filename='img/sem-capa.jpg') }}" alt="Sem capa" />
                   {% endif %}
                 </figure>
               </div>
@@ -73,6 +84,23 @@
         {% endfor %}
       </div>
     </div>
+    <!-- Navegação -->
+    <hr />
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      <a href="#" class="pagination-previous">Anterior</a>
+      <a href="#" class="pagination-next">Próximo</a>
+      <ul class="pagination-list">
+        <li><a href="#" class="pagination-link" aria-label="Goto page 1">1</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a href="#" class="pagination-link" aria-label="Goto page 45">45</a></li>
+        <li>
+          <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
+        </li>
+        <li><a href="#" class="pagination-link" aria-label="Goto page 47">47</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a href="#" class="pagination-link" aria-label="Goto page 86">86</a></li>
+      </ul>
+    </nav>
   </div>
 </section>
 {% endblock %}

@@ -29,22 +29,30 @@
           <div class="navbar-end">
             <div class="navbar-item">
               <strong>Adicionar:</strong>
-              <div class="buttons has-addons">
-                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+              <div class="buttons has-addons is-outlined">
+                <a
+                  href="{{ url_for('novo_item', categoria='livros') }}"
+                  class="button {% if categoria_atual == 'livros' and request.endpoint == 'novo_item' %}is-link is-active{% endif %}">
                   <span><i class="ti ti-book-2 mr-2"></i></span>
                   <span>Livro</span>
                 </a>
-                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                <a
+                  href="{{ url_for('novo_item', categoria='jogos') }}"
+                  class="button {% if categoria_atual == 'jogos' and request.endpoint == 'novo_item' %}is-link is-active{% endif %}">
                   <span><i class="ti ti-book-2 mr-2"></i></span>
-                  <span>Livro</span>
+                  <span>Jogo</span>
                 </a>
-                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                <a
+                  href="{{ url_for('novo_item', categoria='filmes') }}"
+                  class="button {% if categoria_atual == 'filmes' and request.endpoint == 'novo_item' %}is-link is-active{% endif %}">
                   <span><i class="ti ti-book-2 mr-2"></i></span>
-                  <span>Livro</span>
+                  <span>Filme</span>
                 </a>
-                <a href="{{ url_for('novo_item', categoria='livros') }}" class="button is-primary">
+                <a
+                  href="{{ url_for('novo_item', categoria='series') }}"
+                  class="button {% if categoria_atual == 'series' and request.endpoint == 'novo_item' %}is-link is-active{% endif %}">
                   <span><i class="ti ti-book-2 mr-2"></i></span>
-                  <span>Livro</span>
+                  <span>Série</span>
                 </a>
               </div>
             </div>

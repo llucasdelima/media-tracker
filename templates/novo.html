@@ -3,97 +3,188 @@
 {% block title %}Adicionar {{ config['titulo_singular'] }} - Media Tracker{% endblock %}
 <!--  -->
 {% block conteudo %}
-<a href="{{ url_for('listar', categoria=categoria_atual) }}">&larr; Voltar para {{ config['nome_aba'] }}</a>
+<section class="section">
+  <div class="container">
+    <a href="{{ url_for('listar', categoria=categoria_atual) }}">&larr; Voltar para {{ config['nome_aba'] }}</a>
+    <hr />
+    <!-- Formulário Principal -->
+    <form
+      action="{{ url_for('adicionar', categoria=categoria_atual) }}"
+      method="POST"
+      enctype="multipart/form-data"
+      id="midia-form">
+      <div class="fixed-grid has-3-cols">
+        <div class="grid">
+          <div class="cell has-text-centered pr-5">
+            <!-- Exibição da Capa -->
+            <figure class="image is-2by3 mb-4">
+              <img src="{{ url_for('static', filename='img/sem-capa.jpg') }}" alt="Sem capa" />
+            </figure>
+            <!-- Capa -->
+            <div class="file">
+              <label class="file-label m-auto" for="campo-capa">
+                <input class="file-input" id="campo-capa" type="file" name="arquivo_capa" accept="image/*" />
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="ti ti-upload"></i>
+                  </span>
+                  <span class="file-label">Subir capa</span>
+                </span>
+              </label>
+            </div>
+          </div>
 
-<h2>Cadastrar {{ config['titulo_singular'] }}</h2>
+          <div class="cell is-col-span-2">
+            <h2 class="title is-2">Cadastrar {{ config['titulo_singular'] }}</h2>
+            <!-- Título -->
+            <div class="field">
+              <label class="label" for="campo-titulo">Título *</label>
+              <input class="input" id="campo-titulo" type="text" name="Título" required autocomplete="off" />
+            </div>
 
-<form
-  action="{{ url_for('adicionar', categoria=categoria_atual) }}"
-  method="POST"
-  enctype="multipart/form-data"
-  id="midia-form">
-  <!-- Título -->
-  <label for="campo-titulo">Título *</label>
-  <input id="campo-titulo" type="text" name="Título" required autocomplete="off" />
+            <!-- Criador (Autor, Desenvolvedora ou Diretor) -->
+            <div class="field">
+              {% if config['campo_criador'] %}
+              <label class="label">{{ config['rotulo_criador'] }}</label>
+              <input type="hidden" name="{{ config['campo_criador'] }}" id="criador-hidden" />
+              <div id="criador-wrapper" onclick="document.getElementById('criador-input-field').focus()">
+                <input
+                  class="input"
+                  type="text"
+                  id="criador-input-field"
+                  list="lista-criadores"
+                  placeholder="Adicionar..."
+                  autocomplete="off" />
+              </div>
+              <datalist id="lista-criadores">
+                {% for cr in criadores_disponiveis %}
+                <option value="{{ cr }}"></option>
+                {% endfor %}
+              </datalist>
+              {% endif %}
+            </div>
 
-  <!-- Criador (Autor, Desenvolvedora ou Diretor) -->
-  {% if config['campo_criador'] %}
-  <label>{{ config['rotulo_criador'] }}</label>
-  <input type="hidden" name="{{ config['campo_criador'] }}" id="criador-hidden" />
-  <div id="criador-wrapper" onclick="document.getElementById('criador-input-field').focus()">
-    <input type="text" id="criador-input-field" list="lista-criadores" placeholder="Adicionar..." autocomplete="off" />
+            <!-- Editora -->
+            {% if config['tem_editora'] %}
+            <div class="field">
+              <label class="label" for="campo-editora">Editora</label>
+              <input
+                class="input"
+                id="campo-editora"
+                type="text"
+                name="Editora"
+                list="lista-editoras"
+                autocomplete="off" />
+              <datalist id="lista-editoras">
+                {% for ed in editoras_disponiveis %}
+                <option value="{{ ed }}"></option>
+                {% endfor %}
+              </datalist>
+            </div>
+            {% endif %}
+
+            <!-- Temporada -->
+            {% if config['tem_temporada'] %}
+            <div class="field">
+              <label class="label" for="campo-temporada">Temporada</label>
+              <input class="input" id="campo-temporada" type="number" name="Temporada" placeholder="Ex: 1" />
+            </div>
+            {% endif %}
+
+            <!-- Ano -->
+            <div class="field">
+              <label class="label" for="campo-ano">Ano</label>
+              <input class="input" id="campo-ano" type="number" name="Ano" />
+            </div>
+
+            <!-- Tags -->
+            <div class="field">
+              <label class="label">Tags</label>
+              <input type="hidden" name="Tags" id="tags-hidden" />
+              <div id="tags-wrapper" onclick="document.getElementById('tag-input-field').focus()">
+                <input
+                  class="input"
+                  type="text"
+                  id="tag-input-field"
+                  list="lista-tags"
+                  placeholder="Adicionar tag..."
+                  autocomplete="off" />
+              </div>
+              <datalist id="lista-tags">
+                {% for tag in tags_disponiveis %}
+                <option value="{{ tag }}"></option>
+                {% endfor %}
+              </datalist>
+            </div>
+            <div class="grid">
+              <!-- Status -->
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-status">Status</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="campo-status" name="Status">
+                        {% for opt in config['status_opcoes'] %}
+                        <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Iniciado -->
+              {% if config['tem_iniciado'] %}
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-iniciado">Iniciado</label>
+                  <input class="input" id="campo-iniciado" type="date" name="Iniciado" />
+                </div>
+              </div>
+              {% endif %}
+
+              <!-- Finalizado -->
+              <div class="cell">
+                <label class="label" for="campo-finalizado">Finalizado</label>
+                <input class="input" id="campo-finalizado" type="date" name="Finalizado" />
+              </div>
+
+              <!-- Nota -->
+              <div class="cell">
+                <div class="field">
+                  <label class="label" for="campo-nota">Nota</label>
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="campo-nota" name="Nota">
+                        <option value="" selected>Sem avaliação</option>
+                        {% for n in range(1, 11) %}
+                        <option value="{{ n }}" selected>{{ n }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Consideração -->
+            <div class="field">
+              <label class="label" for="campo-consideracao">Consideração</label>
+              <textarea
+                class="textarea"
+                id="campo-consideracao"
+                name="Consideração"
+                placeholder="Comentários breves ou notas..."></textarea>
+            </div>
+
+            <!-- Botão de Envio -->
+            <div class="field">
+              <button class="button is-primary" type="submit">Salvar na Planilha</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-  <datalist id="lista-criadores">
-    {% for cr in criadores_disponiveis %}
-    <option value="{{ cr }}"></option>
-    {% endfor %}
-  </datalist>
-  {% endif %}
-
-  <!-- Editora -->
-  {% if config['tem_editora'] %}
-  <label for="campo-editora">Editora</label>
-  <input id="campo-editora" type="text" name="Editora" list="lista-editoras" autocomplete="off" />
-  <datalist id="lista-editoras">
-    {% for ed in editoras_disponiveis %}
-    <option value="{{ ed }}"></option>
-    {% endfor %}
-  </datalist>
-  {% endif %}
-
-  <!-- Temporada -->
-  {% if config['tem_temporada'] %}
-  <label for="campo-temporada">Temporada</label>
-  <input id="campo-temporada" type="number" name="Temporada" placeholder="Ex: 1" />
-  {% endif %}
-
-  <!-- Ano -->
-  <label for="campo-ano">Ano</label>
-  <input id="campo-ano" type="number" name="Ano" />
-
-  <!-- Tags -->
-  <label>Tags</label>
-  <input type="hidden" name="Tags" id="tags-hidden" />
-  <div id="tags-wrapper" onclick="document.getElementById('tag-input-field').focus()">
-    <input type="text" id="tag-input-field" list="lista-tags" placeholder="Adicionar tag..." autocomplete="off" />
-  </div>
-  <datalist id="lista-tags">
-    {% for tag in tags_disponiveis %}
-    <option value="{{ tag }}"></option>
-    {% endfor %}
-  </datalist>
-
-  <!-- Status -->
-  <label for="campo-status">Status</label>
-  <select id="campo-status" name="Status">
-    {% for opt in config['status_opcoes'] %}
-    <option value="{{ opt }}">{{ opt }}</option>
-    {% endfor %}
-  </select>
-
-  <!-- Iniciado -->
-  {% if config['tem_iniciado'] %}
-  <label for="campo-iniciado">Iniciado</label>
-  <input id="campo-iniciado" type="date" name="Iniciado" />
-  {% endif %}
-
-  <!-- Finalizado -->
-  <label for="campo-finalizado">Finalizado</label>
-  <input id="campo-finalizado" type="date" name="Finalizado" />
-
-  <!-- Nota -->
-  <label for="campo-nota">Nota</label>
-  <input id="campo-nota" type="number" step="0.5" min="0" max="10" name="Nota" placeholder="0 - 10" />
-
-  <!-- Capa -->
-  <label for="campo-capa">Capa (Arquivo de Imagem)</label>
-  <input id="campo-capa" type="file" name="arquivo_capa" accept="image/*" />
-
-  <!-- Consideração -->
-  <label for="campo-consideracao">Consideração</label>
-  <textarea id="campo-consideracao" name="Consideração" placeholder="Comentários breves ou notas..."></textarea>
-
-  <!-- Botão de Envio -->
-  <button type="submit">Salvar na Planilha</button>
-</form>
+</section>
 {% endblock %}
