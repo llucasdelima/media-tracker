@@ -102,6 +102,7 @@ Este projeto é disponibilizado para fins de estudo e uso pessoal.
 ## To-Do
 
 Fase 1: Interface e Usabilidade Local
+
  * [ ] Alternador de Visualização (Cards vs. Lista)
    * [ ] Adicionar botões seletores no topo da página com ícones do Tabler Icons (ti-layout-grid e ti-list).
    * [ ] Implementar a tabela do Bulma (<table class="table is-fullwidth">) para a visualização compacta.
@@ -110,7 +111,9 @@ Fase 1: Interface e Usabilidade Local
    * [ ] Tratar parâmetros de consulta (?page=1) no backend com Pandas.
    * [ ] Renderizar o componente nativo de navegação pagination do Bulma.
    * [ ] Permitir ajustar a quantidade de itens por página.
+
 Fase 2: Automação e Busca de Metadados (APIs Externas)
+
  * [ ] Filmes e Séries (TMDB API)
    * [ ] Criar conta gratuita no TMDB e obter a chave de API.
    * [ ] Adicionar campo de busca por título no formulário de cadastro.
@@ -121,11 +124,15 @@ Fase 2: Automação e Busca de Metadados (APIs Externas)
  * [ ] Jogos (RAWG API / Steam API)
    * [ ] Obter chave de API gratuita no RAWG.
    * [ ] Buscar e autopreencher estúdio/desenvolvedor, gênero, plataformas e arte de capa.
+
 Fase 3: Segurança e Controle de Acesso
+
  * [ ] Autenticação de Usuários
    * [ ] Avaliar método de proteção: tela de login nativa no Flask vs. autenticação no Cloudflare Access (Zero Trust).
    * [ ] Caso opte por login nativo: implementar Flask-Login ou controle por sessão com senhas criptografadas (hash).
+
 Fase 4: Conteinerização e Deploy no Servidor
+
  * [ ] Ambiente de Produção (Podman)
    * [ ] Criar Containerfile com base Python e servidor WSGI (Gunicorn).
    * [ ] Criar compose.yaml com volumes nomeados para media-tracker.ods e static/covers/ usando o modificador :Z (SELinux).
